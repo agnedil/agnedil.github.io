@@ -1,0 +1,272 @@
+<html>
+
+<head>
+<meta http-equiv="refresh" content="20" />
+<script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<style>
+
+.label-text {
+    alignment-baseline: middle;
+    font-size: 12px;
+    font-family: arial,helvetica,"sans-serif";
+    fill: #393939;
+}
+.label-text:hover {
+  font-weight: bolder;
+  font-size: 25px;
+}
+.label-line {
+    stroke-width: 1;
+    stroke: #393939;
+}
+.label-circle {
+    fill: #393939;
+}
+.button {
+    background-color: #AED6F1;
+    border: outset;    
+    color: white;
+    padding: 7px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 2px 2px;
+    cursor: pointer;
+}
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    align: center
+    text-decoration: none;
+    color: initial;
+}
+.wedge:hover {
+  fill: #212F3D;
+}
+.table1 {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+}
+
+</style>
+
+<body>
+<h1 align="center">Languages of the World</h1>
+
+<table class="table1">
+  <tr>
+    <td valign="top">
+        <a href="fm_top.html" class="button"> Female vs. Male </a>
+        <p> Drill down on the Female vs. Male distribution of languages </p>
+    </td>
+    <td valign="top">
+        <a href="about.html" class="button"> About Visualization </a>
+    </td>
+    <td valign="top">
+        <a href="ru_top.html" class="button"> Urban vs. Rural </a>
+        <p> Drill down on the Urban vs. Rural distribution of languages </p>
+    </td>
+  </tr>
+</table>
+
+<div style="text-align:center;">
+  <svg style="vertical-align:top;">
+    <g id="canvas">
+        <g id="art" />
+        <g id="labels" /></g>
+  </svg>
+</div>
+
+<p> Source: United Nations Statistics Division, <a href="http://data.un.org/Data.aspx?d=POP&f=tableCode:27"> http://data.un.org/Data.aspx?d=POP&f=tableCode:27 </a></p>
+
+<script>
+
+var data = [{
+    label: 'Chinese',
+    instances: 1500000000
+}, {
+    label: 'Hindi',
+    instances: 1200000000
+}, {
+    label: 'English',
+    instances: 750000000
+}, {
+    label: 'Russian',
+    instances: 150000000
+}, {
+    label: 'Spanish',
+    instances: 200000000
+}, {
+    label: 'Portugese',
+    instances: 200000000
+}, {
+    label: 'Arabic',
+    instances: 250000000
+}];
+
+svg = d3.select("svg");
+canvas = d3.select("#canvas");
+art = d3.select("#art");
+labels = d3.select("#labels");
+
+// Pie layout function will add convenience data to our existing data (start angle and end angle for each data element).
+my_pie = d3.layout.pie()
+my_pie.value(function (d, i) {
+    // Tells the layout function what data property to use as the value.
+    return d.instances;
+});
+
+// Chart dimensions
+cDim = {
+    height: 672,
+    width: 1000,
+    innerRadius: 75,
+    outerRadius: 270,
+    labelRadius: 320
+}
+
+// Size of our SVG element
+svg.attr({
+    height: cDim.height,
+    width: cDim.width
+});
+
+// Moves every coordinate to the center of the SVG element 
+canvas.attr("transform", "translate(" + (cDim.width / 2) + "," + (cDim.width / 2 - 160) + ")");
+
+pied_data = my_pie(data);
+
+// pied_arc calculates the path information for each wedge based on the dataset, used in the "d" attribute.
+pied_arc = d3.svg.arc()
+    .innerRadius(75)
+    .outerRadius(270);
+
+// ordinal scale returning 10 predefined colors, part of d3 core
+pied_colors = d3.scale.category10();
+
+// draw arcs
+enteringArcs = art.selectAll(".wedge").data(pied_data).enter();
+
+enteringArcs.append("path")
+    .attr("class", "wedge")
+    .attr("d", pied_arc)
+    .attr("fill", function (d, i) { return pied_colors(i); });
+
+// draw label lines, etc.
+enteringLabels = labels.selectAll(".label").data(pied_data).enter();
+labelGroups = enteringLabels.append("g").attr("class", "label");
+labelGroups.append("circle").attr({
+    x: 0,
+    y: 0,
+    r: 2,
+    fill: "#000",
+    transform: function (d, i) {
+        centroid = pied_arc.centroid(d);
+        return "translate(" + pied_arc.centroid(d) + ")";
+    },
+        'class': "label-circle"
+});
+
+// trigonometry
+textLines = labelGroups.append("line").attr({
+    x1: function (d, i) {
+        return pied_arc.centroid(d)[0];
+    },
+    y1: function (d, i) {
+        return pied_arc.centroid(d)[1];
+    },
+    x2: function (d, i) {
+        centroid = pied_arc.centroid(d);
+        midAngle = Math.atan2(centroid[1], centroid[0]);
+        x = Math.cos(midAngle) * cDim.labelRadius;
+        return x;
+    },
+    y2: function (d, i) {
+        centroid = pied_arc.centroid(d);
+        midAngle = Math.atan2(centroid[1], centroid[0]);
+        y = Math.sin(midAngle) * cDim.labelRadius;
+        return y;
+    },
+        'class': "label-line"
+});
+
+textLabels = labelGroups.append("text").attr({
+    x: function (d, i) {
+        centroid = pied_arc.centroid(d);
+        midAngle = Math.atan2(centroid[1], centroid[0]);
+        x = Math.cos(midAngle) * cDim.labelRadius;
+        sign = (x > 0) ? 1 : -1
+        labelX = x + (5 * sign)
+        return labelX;
+    },
+    y: function (d, i) {
+        centroid = pied_arc.centroid(d);
+        midAngle = Math.atan2(centroid[1], centroid[0]);
+        y = Math.sin(midAngle) * cDim.labelRadius;
+        return y;
+    },
+        'text-anchor': function (d, i) {
+        centroid = pied_arc.centroid(d);
+        midAngle = Math.atan2(centroid[1], centroid[0]);
+        x = Math.cos(midAngle) * cDim.labelRadius;
+        return (x > 0) ? "start" : "end";
+    },
+        'class': 'label-text'
+}).text(function (d) {
+    return d.data.label
+});
+
+alpha = 0.5;
+spacing = 12;
+
+function relax() {
+    again = false;
+    textLabels.each(function (d, i) {
+        a = this;
+        da = d3.select(a);
+        y1 = da.attr("y");
+        textLabels.each(function (d, j) {
+            b = this;
+            // a & b are the same element and don't collide.
+            if (a == b) return;
+            db = d3.select(b);
+            // a & b are on opposite sides of the chart and
+            // don't collide
+            if (da.attr("text-anchor") != db.attr("text-anchor")) return;
+            // calculate distance between these elements 
+            y2 = db.attr("y");
+            deltaY = y1 - y2;
+            
+            // Our spacing is greater than our specified spacing, so they don't collide
+            if (Math.abs(deltaY) > spacing) return;
+            
+            // If the labels collide, push each labels up and down a little bit
+            again = true;
+            sign = deltaY > 0 ? 1 : -1;
+            adjust = sign * alpha;
+            da.attr("y",+y1 + adjust);
+            db.attr("y",+y2 - adjust);
+        });
+    });
+    // Adjust line leaders to to follow the labels 
+    if(again) {
+        labelElements = textLabels[0];
+        textLines.attr("y2",function(d,i) {
+            labelForLine = d3.select(labelElements[i]);
+            return labelForLine.attr("y");
+        });
+        setTimeout(relax,20)
+    }
+}
+
+relax();
+
+</script>
+
+</body>
+</html>
