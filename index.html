@@ -55,8 +55,8 @@ a.button {
 
 </style>
 
-<body>
-<h1 align="center">Languages of the World</h1>
+<body background="debut_light.png">
+<h1 align="center"> Distribution of Languages of the World </h1>
 
 <table class="table1">
   <tr>
@@ -86,28 +86,12 @@ a.button {
 
 <script>
 
-var data = [{
-    label: 'Chinese',
-    instances: 1500000000
-}, {
-    label: 'Hindi',
-    instances: 1200000000
-}, {
-    label: 'English',
-    instances: 750000000
-}, {
-    label: 'Russian',
-    instances: 150000000
-}, {
-    label: 'Spanish',
-    instances: 200000000
-}, {
-    label: 'Portugese',
-    instances: 200000000
-}, {
-    label: 'Arabic',
-    instances: 250000000
-}];
+d3.csv("languages.csv", function(data) {    // u can also use d3.tsv("data.tsv"
+  
+  data.forEach(function(d) {
+  d.label = d.label;    
+  d.instances = +d.instances;      
+  });
 
 svg = d3.select("svg");
 canvas = d3.select("#canvas");
@@ -124,7 +108,7 @@ my_pie.value(function (d, i) {
 // Chart dimensions
 cDim = {
     height: 672,
-    width: 1000,
+    width: 1202,
     innerRadius: 75,
     outerRadius: 270,
     labelRadius: 320
@@ -137,7 +121,7 @@ svg.attr({
 });
 
 // Moves every coordinate to the center of the SVG element 
-canvas.attr("transform", "translate(" + (cDim.width / 2) + "," + (cDim.width / 2 - 160) + ")");
+canvas.attr("transform", "translate(" + (cDim.width / 2) + "," + (cDim.height / 2) + ")");
 
 pied_data = my_pie(data);
 
@@ -218,7 +202,8 @@ textLabels = labelGroups.append("text").attr({
     },
         'class': 'label-text'
 }).text(function (d) {
-    return d.data.label
+    var comb = d.data.label + ": " + d.data.instances
+    return comb
 });
 
 alpha = 0.5;
@@ -265,6 +250,8 @@ function relax() {
 }
 
 relax();
+
+}); // d3.tsv
 
 </script>
 

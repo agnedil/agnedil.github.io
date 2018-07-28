@@ -1,8 +1,64 @@
 <html>
 <head>
+
+<style>
+
+.button {
+    background-color: #AED6F1;
+    border: outset;    
+    color: white;
+    padding: 7px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 2px 2px;
+    cursor: pointer;
+}
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    align: center
+    text-decoration: none;
+    color: initial;
+}
+.table1 {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+}
+.p1 {
+    font-size: 25px;    
+}
+.li1 {
+    font-size: 25px;    
+}
+
+</style>
 </head>
-<body>
-<h2 align=center> Placeholder for my description </h2>
-<p align=center> References </p>
+<body background="debut_light.png">
+
+<table class="table1">
+  <tr>
+    <td valign="top">
+        <a href="index.html" class="button" onclick="history.back()"> Main Page </a>        
+    </td>
+    <td valign="top">
+        <h1 align=center> About this visualization </h1>
+    </td>
+    <td valign="top">        
+    <a class="button" onclick="history.back()"> Back </a>
+    </td>
+  </tr>
+</table>
+
+<p align=left class="p1"> References </p>
+<ul>
+<li align=left class="li1"> Creating a horizontal bar graph using D3.js: http://hdnrnzk.me/2012/07/04/creating-a-bar-graph-using-d3js </li>
+<li align=left class="li1"> Dual scale D3 vertical bar chart: https://github.com/liufly/Dual-scale-D3-Bar-Chart </li>
+<li align=left class="li1"> Pie chart with relaxed labels: https://jsfiddle.net/thudfactor/HdwTH </li>
+<li align=left class="li1"> D3.js documentation: https://github.com/d3/d3-3.x-api-reference </li>
+</ul>
 </body>
 </html>

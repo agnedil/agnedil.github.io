@@ -60,12 +60,54 @@
   stroke: #000;
   shape-rendering: crispEdges;
 }
+.button {
+    background-color: #AED6F1;
+    border: outset;    
+    color: white;
+    padding: 7px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 2px 2px;
+    cursor: pointer;
+}
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    align: center
+    text-decoration: none;
+    color: initial;
+}
+.table1 {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+}
+
 </style>
 </head>
 
-<body>
+<body background="debut_light.png">
 
-<div style="background-color:#F2F4F4; height: 75px; padding: 1px 0;" > <H2 align=center> Top Level Heading Placeholder</H2> </div>
+<h1 align=center> Female (F) vs. Male (M): Smallest Languages </h1>
+
+<table class="table1">
+  <tr>
+    <td valign="top">
+        <a href="index.html" class="button">  Main Page </a>        
+    </td>
+    <td valign="top">
+        <a href="about.html" class="button"> About Visualization </a>
+    </td>
+    <td valign="top">
+        <a href="fm_top.html" class="button"> Previous </a>
+        <p> See the same for the largest languages </p>
+    </td>
+  </tr>
+</table>
+
 <div id="theChart" align="center"> </div>
 
 <script>

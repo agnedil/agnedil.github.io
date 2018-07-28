@@ -42,11 +42,11 @@
 }
 
 .bar1 {
-  fill: steelblue;
+  fill: #CB4335;
 }
 
 .bar2 {
-  fill: #F39C12;
+  fill: #45B39D;
 }
 
 .axis text {
@@ -60,12 +60,54 @@
   stroke: #000;
   shape-rendering: crispEdges;
 }
+.button {
+    background-color: #AED6F1;
+    border: outset;    
+    color: white;
+    padding: 7px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 2px 2px;
+    cursor: pointer;
+}
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    align: center
+    text-decoration: none;
+    color: initial;
+}
+.table1 {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+}
+
 </style>
 </head>
 
-<body>
+<body background="debut_light.png">
 
-<div style="background-color:#F2F4F4; height: 75px; padding: 1px 0;" > <H2 align=center> Top Level Heading Placeholder</H2> </div>
+<h1 align=center> Urban (U) vs. Rural (R): Smallest Languages </h1>
+
+<table class="table1">
+  <tr>
+    <td valign="top">
+        <a href="index.html" class="button">  Main Page </a>        
+    </td>
+    <td valign="top">
+        <a href="about.html" class="button"> About Visualization </a>
+    </td>
+    <td valign="top">
+        <a href="ru_top.html" class="button"> Previous </a>
+        <p> See the same for the largest languages </p>
+    </td>
+  </tr>
+</table>
+
 <div id="theChart" align="center"> </div>
 
 <script>
@@ -189,7 +231,7 @@ d3.tsv("data.tsv", function(error, data) {    // u can also use d3.tsv("data.tsv
     //.style("font-weight", "bold")
     .text(String);
 
-  // female notation on the left  
+  // rural notation on the left  
   chart.selectAll()
     .data(names)
     .enter().append("text")
@@ -199,9 +241,9 @@ d3.tsv("data.tsv", function(error, data) {    // u can also use d3.tsv("data.tsv
     .attr("text-anchor", "start")
     .attr('class', 'name')
     .style("font-size", "14px")    
-    .text('F');
+    .text('R');
 
-  // male notation on the left  
+  // urban notation on the left  
   chart.selectAll()
     .data(names)
     .enter().append("text")
@@ -211,7 +253,7 @@ d3.tsv("data.tsv", function(error, data) {    // u can also use d3.tsv("data.tsv
     .attr("text-anchor", "start")
     .attr('class', 'name')
     .style("font-size", "14px")    
-    .text('M');
+    .text('U');
 
   // horizontal lines
   chart.selectAll('.hline').data(names).enter()
