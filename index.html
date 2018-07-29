@@ -56,7 +56,7 @@ a.button {
 </style>
 
 <body background="debut_light.png">
-<h1 align="center"> Distribution of Languages of the World </h1>
+<h1 align="center"> Top 25 Languages by Number of Speakers </h1>
 
 <table class="table1">
   <tr>
@@ -86,11 +86,11 @@ a.button {
 
 <script>
 
-d3.csv("languages.csv", function(data) {    // u can also use d3.tsv("data.tsv"
+d3.tsv("languages.tsv", function(data) {    // u can also use d3.tsv("data.tsv"
   
   data.forEach(function(d) {
-  d.label = d.label;    
-  d.instances = +d.instances;      
+  d.lang = d.lang;    
+  d.num = +d.num;      
   });
 
 svg = d3.select("svg");
@@ -99,15 +99,15 @@ art = d3.select("#art");
 labels = d3.select("#labels");
 
 // Pie layout function will add convenience data to our existing data (start angle and end angle for each data element).
-my_pie = d3.layout.pie()
+my_pie = d3.layout.pie().startAngle(Math.PI / 2).endAngle(Math.PI * 2 + Math.PI / 2)
 my_pie.value(function (d, i) {
     // Tells the layout function what data property to use as the value.
-    return d.instances;
+    return d.num;
 });
 
 // Chart dimensions
 cDim = {
-    height: 672,
+    height: 700,
     width: 1202,
     innerRadius: 75,
     outerRadius: 270,
@@ -179,6 +179,7 @@ textLines = labelGroups.append("line").attr({
         'class': "label-line"
 });
 
+var thou = d3.format(",");
 textLabels = labelGroups.append("text").attr({
     x: function (d, i) {
         centroid = pied_arc.centroid(d);
@@ -202,7 +203,7 @@ textLabels = labelGroups.append("text").attr({
     },
         'class': 'label-text'
 }).text(function (d) {
-    var comb = d.data.label + ": " + d.data.instances
+    var comb = d.data.lang + ": " + thou(d.data.num)
     return comb
 });
 

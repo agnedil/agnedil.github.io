@@ -102,7 +102,7 @@ a.button {
         <a href="about.html" class="button"> About Visualization </a>
     </td>
     <td valign="top">
-        <a href="fm_top.html" class="button"> Previous </a>
+        <a href="fm_top.html" class="button"> Previous Page </a>
         <p> See the same for the largest languages </p>
     </td>
   </tr>
@@ -112,7 +112,7 @@ a.button {
 
 <script>
 
-d3.tsv("data.tsv", function(error, data) {    // u can also use d3.tsv("data.tsv"
+d3.tsv("languages_sex_asc.tsv", function(error, data) {    // u can also use d3.tsv("data.tsv"
   
   if (error) throw error;
   var names = [],
@@ -141,7 +141,7 @@ d3.tsv("data.tsv", function(error, data) {    // u can also use d3.tsv("data.tsv
       left_width = 150;
  
   x = d3.scale.log()                  // log() inst linear, +ticks
-     .domain([2, d3.max(hotdogsAll)])
+     .domain([25, d3.max(hotdogsAll)])
      .range([0, width]);
 
   y = function(i) { return yRangeBand * i; };
@@ -162,8 +162,8 @@ d3.tsv("data.tsv", function(error, data) {    // u can also use d3.tsv("data.tsv
     .orient("bottom")
     //.tickSize(5)
     //.tickValues(x.ticks(5))
-    //.tickFormat()
-    .ticks(10, d3.format("9.2r"));
+    .tickFormat(d3.format("s"));
+    //.ticks(10, d3.format("9.2r"));
 
   chart.append("g")
     .attr("class", "x axis")
@@ -190,6 +190,7 @@ d3.tsv("data.tsv", function(error, data) {    // u can also use d3.tsv("data.tsv
     .attr("width", x)
     .attr("height", bar_height);
 
+  var thou = d3.format(",");
   // numbers on bar1  
   chart.selectAll("text.score")
     .data(hotdogs1)
@@ -201,7 +202,7 @@ d3.tsv("data.tsv", function(error, data) {    // u can also use d3.tsv("data.tsv
     .attr("text-anchor", "end")
     .attr("class", "score")
     .style("font-size", "16px")
-    .text(String);
+    .text(function(data) { return thou(data); });
 
   // numbers on bar2  
   chart.selectAll()
@@ -215,7 +216,7 @@ d3.tsv("data.tsv", function(error, data) {    // u can also use d3.tsv("data.tsv
     //.style("font-size", "18px")
     .attr("class", "score")
     .style("font-size", "16px")
-    .text(String);
+    .text(function(data) { return thou(data); });
 
   // language names on the left  
   chart.selectAll("text.name")
