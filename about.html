@@ -29,15 +29,19 @@ a.button {
     text-align: center;
 }
 .p1 {
-    font-size: 25px;    
+    font-size: 25px;
+    margin-left: 25;
+    margin-right: 25;    
 }
 .li1 {
-    font-size: 25px;    
+    font-size: 25px;
+    margin-left: 35;
+    margin-right: 35;       
 }
 
 </style>
 </head>
-<body background="debut_light.png">
+<body background="cream_dust.png">
 
 <table class="table1">
   <tr>
@@ -53,12 +57,69 @@ a.button {
   </tr>
 </table>
 
-<p align=left class="p1"> References </p>
+<p align=center class="p1" style="text-align:center;font-weight: bold;"> 1. Introduction </p>
+
+<p align=justify class="p1"> I used the same dataset as for the midterm project: <i> Population by language, sex, and urban/rural residence</i> prepared by the United Nations Statistics Division and available at <a href="http://data.un.org/Data.aspx?d=POP&f=tableCode%3a27#POP"> http://data.un.org/Data.aspx?d=POP&f=tableCode%3a27#POP </a>. I cleaned the data to exclude any records that are meaningless for the purpose of visualization (e.g. 0 speakers, rows with totals, languages marked as &quot;Other&quot;, etc.).
+The dataset is based on data from several censuses. Filtering by census seems to produce incomplete datasets. Therefore, I had to use the entire dataset, and any numerical results should be treated as relative because the number of speakers may be overestimated. Also, the dataset is lacking data on Chinese, which has more speakers than any other language, and Japanese. I could have easily recreated the data using public sources, but the numbers would be in a different system of coordinates because of the reasons stated above. So, I decided against it. </p>
+<p align=justify class="p1"> In addition, I had to apply minimum cutoffs for languages with the smallest number of speakers (10 to 100 speakers depending on the case) in order to avoid languages with 0 speakers in any of the four assessed categories as much as possible.
+The main purpose of the final project is to demonstrate my D3.js and other visualization skills, but apart form this I also tried to approximate my work to data analysis with the aim to establish a relation between the number of speakers of a natural language and the female vs. male or rural vs. urban ratios. Overall, the data is presented in such a way that languages can be analyzed based on these ratios for the largest and smallest 30-50 or so languages in an attempt to establish the said correlation. </p>
+
+<p align=center class="p1" style="font-weight: bold;"> 2. Rubric Requirements Implemented in Visualization </p>
+
+<p align=justify class="p1"> In my visualization, the <b>ordering</b> of scenes is more user-directed with soft author-led ordering recommendations - the so called hybrid structure. From the main overview page the user can drill down on one of the two detailed aspects of the dataset consisting of two scenes each. In each scene, the user has a freedom of either continuing to go forward or backward, or to return to the main overview page. Plus there is an option to click on the <i>About Visualization</i> button on each page to see this essay. </p>
+
+<p align=justify class="p1"> According to E. Segel and J. Heer in Narrative Visualization: <i> Telling Stories with Data </i> [2], &quot;the <b>drill-down story visualization</b> structure presents a general theme and then allows the user to choose among particular instances of that theme to reveal additional details and backstories.&quot; This is exactly what my visualization does because it has the first overview scene where the number of speakers are shown for each language in the form of a pie chart, and then the viewer can drill down on two more detailed aspects: the number of speakers per the female vs. male distribution of languages (two scenes - one for the largest and one for the smallest languages) or the urban vs. rural distribution (similar two scenes). Therefore, the type of hybrid structure that I selected for my visualization is the drill-down story visualization. </p>
+
+<p align=justify class="p1"> Thus, my visualization contains <b>5 scenes</b>: a pie chart as an overview of the dataset and four categorical vs. quantitative side-by-side bar charts. The layout includes the charts themselves and triggers in the form of buttons to initiate transition from one scene to another. Arcs on the pie chart, bars on the bar chart, and labels on all charts have a hover over effect which makes them stand out during mouse over. I tried to use a consistent visual design to keep the audience oriented through transitions: </p>
 <ul>
-<li align=left class="li1"> Creating a horizontal bar graph using D3.js: http://hdnrnzk.me/2012/07/04/creating-a-bar-graph-using-d3js </li>
-<li align=left class="li1"> Dual scale D3 vertical bar chart: https://github.com/liufly/Dual-scale-D3-Bar-Chart </li>
-<li align=left class="li1"> Pie chart with relaxed labels: https://jsfiddle.net/thudfactor/HdwTH </li>
-<li align=left class="li1"> D3.js documentation: https://github.com/d3/d3-3.x-api-reference </li>
+<li align=left class="li1"> uniform background pattern; </li>
+<li align=left class="li1"> uniform button design; </li>
+<li align=left class="li1"> the buttons are located almost on the same places on the page with the link to the main page always on the left, an alternative go forward link on the right, and the <i>About Visualization</i> button in the middle; </li>
+<li align=left class="li1"> uniform css styles for most of the scene elements; </li>
+<li align=left class="li1"> consistent uniform bar chart design; </li>
+<li align=left class="li1"> consistent category colors for each type of the drill down (female vs. male and urban vs. rural). </li>
 </ul>
+
+<p align=justify class="p1"> The <b>annotations</b> are applied as follows in my visualization: </p>
+<ul>
+<li align=left class="li1"> The scenes have proper descriptive titles; </li>
+<li align=left class="li1"> All axes are labeled; </li>
+<li align=left class="li1"> On the pie chart, each languages has an annotation showing its name and number of speakers, as well as the unique color; </li>
+<li align=left class="li1"> On the bar charts, each data category has its own annotation (M=male, F=Female, R=Rural, U=Urban), all the languages are noted on the Y axis, and the number of speakers in each category is noted at the end of each bar. </li>
+</ul>
+<p align=justify class="p1"> To support visual consistency, I used exactly the same styles and templates for similar types of the above annotations on each slide so that they would not distract the viewer from data analysis (e.g. font size, font color, hover over behavior, etc.). </p>
+
+<p align=justify class="p1"> As defined by A. Satyanarayan and J. Heer in <i>Authoring narrative visualizations with Ellipsis</i> [1], <b>parameters</b> are name-value pairs that set visualization state and provide a means for decoupled control. In my visualization parameters include: </p>
+<ul>
+<li align=left class="li1"> Constants used to create the visualization - chart width and height, inner  / outer / label radii on the pie chart, bar height and gap on the bar chart, etc.; </li>
+<li align=left class="li1"> Variables (the boolean variable <i>again</i> in the pie chart D3.js code, filter ranges for bars on the bar charts); </li>
+<li align=left class="li1"> Encoding functions (such as transforms and to display specific values on charts); </li>
+<li align=left class="li1"> Calculated fields on charts. </li>
+</ul>
+<p align=justify class="p1"> When the value of any of these parameters changes, the visualization is re-drawn. In my visualization I do not use any parameters bound to widgets (sliders or drop-down menus), but this is something to think of in the future. Each of these parameters controls the current state of every scene type in my narrative visualization; the corresponding scene types are mentioned in the parenthesis above. </p>
+
+<p align=justify class="p1"> Go forward / go back buttons initiated by a user click event are <b>triggers</b> in my case, and they initiate a change in parameters: for example you can move from a chart showing the female vs. male distribution for the largest languages to the one showing the same distribution for the smallest languages. The viewer becomes aware of this through the evident change of the scene and the corresponding title of the page. Also, the data on the chart + the chart scale change to show numbers on a completely different scale (largest languages - millions of speakers, smallest languages - individual speakers). </p>
+
+<p align=center class="p1" style="font-weight: bold;"> 3. Web Page Interaction Design </p>
+<p align=justify class="p1"> Since my visualization is not overly complex, I did a simple <b>task analysis and dialog design</b>. First of all, it is the viewer who initiates the dialog. The task consists in displaying various subsets of data through onclick events which are the way of the user-computer communication. Actions are connected to interface elements in the form of control widgets - buttons operating through the button press callback mechanism when the event is a click followed by system effect: transition to another scene.</p>
+<p align=justify class="p1"> In terms of the <b>interactive dynamics</b>, the data are: </p>
+<ul>
+<li align=left class="li1"> Filtered to focus on relevant items (rows with totals and other cumulative fields such as rows indexed as Other languages, American languages, and so on, are removed, languages with 0 speakers in a category are removed, etc.) </li>
+<li align=left class="li1"> Sorted to expose patterns (first for most spoken, then for rare languages) </li>
+</ul>
+
+<p align=center class="p1" style="font-weight: bold;"> 4. Conclusions Deduced from Dataset Analysis </p>
+
+<p align=justify class="p1"> There is a slight variation in the numbers for male and female speakers for the largest languages. The differences in the rural vs. urban ratio for the largest languages are more noticeable with the urban population prevailing for the languages spoken in Europe and America and rural - for Asian languages (e.g. compare English and Hindi). But the overall differences are not critical. </p>
+<p align=justify class="p1"> The imbalance between the categories becomes much more evident for the languages with the smallest number of speakers. There are even languages that don't have speakers in the other category or have very few speakers in it. It is evident that <b>there is a correlation</b> between the number of speakers and the two distributions in question. The less speakers there are, the more imbalanced the female vs. male and rural vs. urban distributions become with the rural category prevailing. </p>
+
+<p align=center class="p1" style="font-weight: bold;"> 5. References </p>
+<ol type="1">
+	<li align=left class="li1"> Satyanarayan, A., & Heer, J. (2014). Authoring narrative visualizations with Ellipsis. Proc. EuroVis </li>
+	<li align=left class="li1"> E. Segel and J. Heer (2010) Narrative Visualization: Telling Stories with Data </li>
+	<li align=left class="li1"> Creating a horizontal bar graph using D3.js: <a href="http://hdnrnzk.me/2012/07/04/creating-a-bar-graph-using-d3js"> http://hdnrnzk.me/2012/07/04/creating-a-bar-graph-using-d3js </a> </li>
+	<li align=left class="li1"> Pie chart with relaxed labels: <a href="https://jsfiddle.net/thudfactor/HdwTH"> https://jsfiddle.net/thudfactor/HdwTH </a> </li>
+	<li align=left class="li1"> D3.js documentation: <a href="https://github.com/d3/d3-3.x-api-reference"> https://github.com/d3/d3-3.x-api-reference </a> </li>
+</ol>
 </body>
 </html>
